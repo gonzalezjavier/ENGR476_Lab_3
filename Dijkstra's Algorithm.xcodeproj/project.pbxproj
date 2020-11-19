@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1334C4F1255CD22100A282A9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 1334C4F0255CD22100A282A9 /* main.c */; };
+		1322B9C22563305F00E94572 /* Test_File.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1334C4F8255CD26600A282A9 /* Test_File.txt */; };
+		1334C4F1255CD22100A282A9 /* Dijkstra's_Algorithm.c in Sources */ = {isa = PBXBuildFile; fileRef = 1334C4F0255CD22100A282A9 /* Dijkstra's_Algorithm.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +24,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1334C4ED255CD22100A282A9 /* Dijkstra's Algorithm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Dijkstra's Algorithm"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1334C4F0255CD22100A282A9 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		1322B9A7256321C400E94572 /* Programing_HW_3.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Programing_HW_3.pdf; sourceTree = "<group>"; };
+		1334C4ED255CD22100A282A9 /* Dijkstra's Algorithm */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = "Dijkstra's Algorithm"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1334C4F0255CD22100A282A9 /* Dijkstra's_Algorithm.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "Dijkstra's_Algorithm.c"; sourceTree = "<group>"; };
+		1334C4F8255CD26600A282A9 /* Test_File.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Test_File.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +41,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1322B9AC256325F600E94572 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1322B9A7256321C400E94572 /* Programing_HW_3.pdf */,
+				1334C4F8255CD26600A282A9 /* Test_File.txt */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		1334C4E4255CD22100A282A9 = {
 			isa = PBXGroup;
 			children = (
@@ -57,7 +69,8 @@
 		1334C4EF255CD22100A282A9 /* Dijkstra's Algorithm */ = {
 			isa = PBXGroup;
 			children = (
-				1334C4F0255CD22100A282A9 /* main.c */,
+				1322B9AC256325F600E94572 /* Resources */,
+				1334C4F0255CD22100A282A9 /* Dijkstra's_Algorithm.c */,
 			);
 			path = "Dijkstra's Algorithm";
 			sourceTree = "<group>";
@@ -72,6 +85,7 @@
 				1334C4E9255CD22100A282A9 /* Sources */,
 				1334C4EA255CD22100A282A9 /* Frameworks */,
 				1334C4EB255CD22100A282A9 /* CopyFiles */,
+				1322B9C12563305700E94572 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -88,7 +102,10 @@
 		1334C4E5255CD22100A282A9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				KnownAssetTags = (
+					New,
+				);
+				LastUpgradeCheck = 1220;
 				TargetAttributes = {
 					1334C4EC255CD22100A282A9 = {
 						CreatedOnToolsVersion = 12.1;
@@ -96,7 +113,7 @@
 				};
 			};
 			buildConfigurationList = 1334C4E8255CD22100A282A9 /* Build configuration list for PBXProject "Dijkstra's Algorithm" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -113,12 +130,23 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		1322B9C12563305700E94572 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1322B9C22563305F00E94572 /* Test_File.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1334C4E9255CD22100A282A9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1334C4F1255CD22100A282A9 /* main.c in Sources */,
+				1334C4F1255CD22100A282A9 /* Dijkstra's_Algorithm.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +267,9 @@
 		1334C4F5255CD22100A282A9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -247,7 +277,9 @@
 		1334C4F6255CD22100A282A9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
