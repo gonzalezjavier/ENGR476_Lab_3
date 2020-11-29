@@ -13,12 +13,11 @@
 #include <unistd.h>
 #include <ctype.h>
 
-#define M_SIZE 8
 #define INFINITE 999
 
-int numRowsandCol = 0;
-int matrix[M_SIZE][M_SIZE];
-int startNode, endNode;
+int numRowsandCol = 0; //number of rows and columns in cost matrix
+int **matrix; //holds the cost matrix
+int startNode, endNode; //marks the start and destination
 
 void read_from_file(void);
 void dijkstra(void);
@@ -27,31 +26,36 @@ void printPath(int [], int[]);
 
 int main(void) {
     char nodeOne, nodeTwo;
-    read_from_file();
-//    printf("Matrix now\n");
-//    for (int i = 0; i < numRowsandCol; i++) {
-//        for (int j=0; j<numRowsandCol; j++) {
-//            printf("%d", matrix[i][j]);
-//        }
-//        printf("\n");
-//    }
-//    printf("\n");
-    
+    read_from_file(); //read in matrix from file along with its size
+
+    printf("To exit program, type in X for starting node and ending node\n");
     while(1) {
+        //prompts user for starting node and end node
         printf("Enter a starting node(%c-%c): ",65,numRowsandCol+64);
         scanf(" %c", &nodeOne);
         printf("Enter an ending node(%c-%c): ",65,numRowsandCol+64);
         scanf(" %c", &nodeTwo);
+        
         //converts alphabet to correspond with matrix index
         startNode = toupper(nodeOne)-65;
         endNode = toupper(nodeTwo)-65;
         //need to check if the start and end node are valid else ask again for valid ones
         if((startNode>=numRowsandCol || startNode<0) || (endNode>=numRowsandCol || endNode<0)) {//out of range
+            if (startNode==23 & endNode==23) { //break out to end program if desired by user
+                break;
+            }
             printf("Input is out of range of available nodes, try again.\n");
             continue;
         }
         dijkstra();
     }
+    //frees the memory for the matrix
+    for (int i=0; i < numRowsandCol; i++) {
+        free(matrix[i]);
+        matrix[i] = NULL;
+    }
+    free(matrix);
+    matrix = NULL;
     
     return 0;
 }
@@ -61,42 +65,49 @@ int main(void) {
 */
 void read_from_file(void) {
     FILE *file_ptr = fopen("./Test_File.txt", "r"); //Open file
-    char size;
-    //char line[numRowsandCol+2];//stores each line of text     PROBLEM IS THAT NUMROWSANDCOLS ARE ZERO HERE
+    char size; //holds the number of rows and columns
 
     //checks if file was opened
     if(file_ptr==NULL) {
         perror("File cannot be opened");
         exit(1);
     }
+    //load in number of colums and rows
     size = fgetc(file_ptr);
-
-    //fgets(line, 20, file_ptr); //reads a line from the file
     numRowsandCol = atoi(&size);
-    char line[numRowsandCol+2];
-    fgets(line, numRowsandCol+2, file_ptr);
+    //this is allocating the memory for the matrix based on the size being read from the file
+    matrix = malloc(sizeof(int *)*numRowsandCol);
+    for (int i=0; i < numRowsandCol; i++) {
+        matrix[i] = malloc(sizeof(int)*numRowsandCol);
+    }
     
+    char line[numRowsandCol+2]; //stores each line of the file as it is being loaded in
+    fgets(line, numRowsandCol+2, file_ptr); //skips file pointer to next line
+    
+    //Read line by line and store values into matrix
     int i=0;
     while (!feof(file_ptr)) {
-        //Read line by line and store values into matrix
         fgets(line, numRowsandCol+2, file_ptr);
-        //printf("%s",line);
         for (int j=0; j<numRowsandCol; j++) {
-            matrix[i][j] = line[j]-48;
+            matrix[i][j] = line[j]-48; //converts the ASCII values to match index of matrix (0-numRowsCol)
         }
         i++;
+        if (i>=numRowsandCol) { //break out
+            break;
+        }
     }
     fclose(file_ptr);
 }
 
  /*
  //This function calculates the shortest path from the starting
- //node to all other nodes in the cost matrix.
+ //node to all other nodes in the cost matrix and passes the cost
+ //and path taken to be printed to terminal.
  */
 void dijkstra(void) {
     int chosenNodes[numRowsandCol]; //keeps track of chosen/unchosen nodes
     int cost[numRowsandCol];    //keeps track of the cost to get to each node from start node
-    int path[numRowsandCol];
+    int path[numRowsandCol*2];    //keeps track of the path to get
     
     //initialize all values in arrays to zero
     for (int i=0; i< numRowsandCol; i++) {
@@ -107,25 +118,26 @@ void dijkstra(void) {
     cost[startNode] = 0; //cost of node to itself is always zero
     
     for (int i=0; i<numRowsandCol-1; i++) {
-        int chosenNodeIndex = minCostIndex(chosenNodes, cost); //least cost
+        int chosenNodeIndex = minCostIndex(chosenNodes, cost); //least cost index
 
-        chosenNodes[chosenNodeIndex] = 1; //mark chosen node as chosen
+        chosenNodes[chosenNodeIndex] = 1; //mark least cost node as chosen
 
         //update the neighbors of the chosen node
         for (int j=0; j < numRowsandCol; j++) {
-                //not chosen        neighbors                       the combined cost from source neighbor is less than the previous cost
-            if (!chosenNodes[j] && matrix[chosenNodeIndex][j]!=0 && cost[chosenNodeIndex] + matrix[chosenNodeIndex][j] < cost[j]) { //if not chosen and are neighbors
-                cost[j] = cost[chosenNodeIndex] + matrix[chosenNodeIndex][j];
-                path[j] = chosenNodeIndex;
+                //update only if not chosen, neighbors of chosen node the combined cost is less than it was previously
+            if (!chosenNodes[j] && matrix[chosenNodeIndex][j]!=0 && cost[chosenNodeIndex] + matrix[chosenNodeIndex][j] < cost[j]) {
+                cost[j] = cost[chosenNodeIndex] + matrix[chosenNodeIndex][j]; //accumulates cost
+                path[j] = chosenNodeIndex; //updates the path
             }
         }
     }
     printPath(cost, path);
 }
 //this checks the available nodes and their distance from the source node
+//the index of the lowest cost node is then returned
 int minCostIndex(int chosenNodes[], int cost[]) {
-    int min = INFINITE;
-    int minIndex = 0;
+    int min = INFINITE; //set the temporary min value to infinite
+    int minIndex = 0; //holds the index of the min cost node
     for (int i =0; i < numRowsandCol; i++) {
         if (chosenNodes[i] == 0 && cost[i] <= min) { //looking at unchosen nodes
             min = cost[i];
@@ -135,21 +147,16 @@ int minCostIndex(int chosenNodes[], int cost[]) {
     return minIndex;
 }
 void printPath(int cost[], int path[]) {
-    int reversePath[numRowsandCol];
-//
-//    for (int i=0; i < numRowsandCol; i++) {
-//        printf("%c \t\t %d\n", 65+i, cost[i]);
-//    }
+    int reversePath[numRowsandCol*2]; //will hold the path in correct order
+    int index = endNode; //used for finding the path backwards
+    int counter=0; //counts the number of times until start node is reached
     
-    int index = endNode;
-    int counter=0;
-    //printf(" %c ", index+65);
     reversePath[counter++] = index+65;
-    while (index!=startNode) {
+    while (index!=startNode) {  //iterates through path backwards until start node is reached
         index = path[index];
         reversePath[counter++] = index+65;
-        //printf(" %c ", index+65);
     }
+    //Prints the cost and path
     printf("Total Cost: %d\nPath Taken: ", cost[endNode]);
     counter-=1;
     while(reversePath[counter]!=endNode+65) {
