@@ -1,7 +1,7 @@
 //
 //
 //  Dijkstra's Algorithm
-//  This porgram computes the shortest path from a starting
+//  This program computes the shortest path from a starting
 //  node to and ending node.
 //
 //  Created by Javier Gonzalez on 11/11/20.
@@ -118,13 +118,13 @@ void dijkstra(void) {
     cost[startNode] = 0; //cost of node to itself is always zero
     
     for (int i=0; i<numRowsandCol-1; i++) {
-        int chosenNodeIndex = minCostIndex(chosenNodes, cost); //least cost index
+        int chosenNodeIndex = minCostIndex(chosenNodes, cost); //least cost index of available nodes
 
         chosenNodes[chosenNodeIndex] = 1; //mark least cost node as chosen
 
         //update the neighbors of the chosen node
         for (int j=0; j < numRowsandCol; j++) {
-                //update only if not chosen, neighbors of chosen node the combined cost is less than it was previously
+                //update only if not chosen, not itself, and neighbors of chosen node the combined cost is less than it was previously
             if (!chosenNodes[j] && matrix[chosenNodeIndex][j]!=0 && cost[chosenNodeIndex] + matrix[chosenNodeIndex][j] < cost[j]) {
                 cost[j] = cost[chosenNodeIndex] + matrix[chosenNodeIndex][j]; //accumulates cost
                 path[j] = chosenNodeIndex; //updates the path
